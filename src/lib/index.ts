@@ -1,7 +1,11 @@
 import * as dotenv from 'dotenv';
 
+type SchemaValue =
+  | { required: true; default?: never }
+  | { default: any; required?: never };
+
 type EnvSchema = {
-  [key: string]: { required: true } | { default: any };
+  [key: string]: SchemaValue;
 };
 
 type EnvConfig = {
@@ -11,10 +15,9 @@ type EnvConfig = {
   };
 } & dotenv.DotenvConfigOptions;
 
-export const loadEnv = (
-  schema: EnvSchema,
-  config: EnvConfig = { path: '.env' }
-) => {
+type SchemaKey<T> = keyof T;
+
+export const loadEnv = <T>(schema: T, config: EnvConfig = { path: '.env' }) => {
   const {
     message = {
       missingEnv: 'Variable not definded in env schema and env file',
@@ -27,10 +30,14 @@ export const loadEnv = (
 
   if (env.error) throw env.error;
 
+  type Key = SchemaKey<typeof schema>;
+  type AllKeys = Partial<Record<Key, string>>;
+
   return {
-    getEnv: (key: string): string | undefined => {
+    getEnv: (keyStr: Key): string => {
+      const key = keyStr as string;
       const value = env?.parsed?.[key];
-      const option = schema[key];
+      const option = schema[key as Key] as SchemaValue;
 
       if (!option && !value)
         throw new Error(`${message?.missingEnv}: '${key}'`);
@@ -41,12 +48,13 @@ export const loadEnv = (
       return value || ('default' in option ? option.default : undefined);
     },
     env,
-    getAllEnv: () => env.parsed,
+    getAllEnv: (): AllKeys => env.parsed! as AllKeys,
   };
 };
 
 // ------------------------------------------------- USAGE -----------------------------------------------
 
+// dot-env config + this lib's config (messsage: {})
 const config = {
   path: '.env',
   message: {
@@ -55,17 +63,17 @@ const config = {
   },
 };
 
-const schema: EnvSchema = {
+const variables = {
   TEST: { default: 'A DEFAULT VALUE' },
   SECRET: { default: 1234567890 },
   FLOAT: { default: 0.5 },
   BOOL: { required: true },
-};
+} satisfies EnvSchema;
 
-const { getEnv, getAllEnv } = loadEnv(schema, config);
+const { getEnv, getAllEnv } = loadEnv(variables, config);
 
 const allEnv = getAllEnv();
-console.log(allEnv);
+console.log(allEnv.BOOL);
 
 const TEST = getEnv('TEST');
 console.log({ TEST });
@@ -75,4 +83,7 @@ const FLOAT = getEnv('FLOAT');
 console.log({ FLOAT });
 const BOOL = getEnv('BOOL');
 console.log({ BOOL });
-const RANDOM = getEnv('RANDOM');
+
+// Shows error in editor
+const RANDOM = getEnv('asdfasdf');
+const float = getEnv('float');
