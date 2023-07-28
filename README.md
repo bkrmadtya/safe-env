@@ -10,7 +10,11 @@ A thin [typescript](https://www.typescriptlang.org/) wrapper around [dotenv](htt
 ## Install
 
 ```bash
-npm install safe-env
+npm install @bkrmadtya/safe-env
+# or
+pnpm add @bkrmadtya/safe-env
+# or
+yarn add @bkrmadtya/safe-env
 ```
 
 ## Configuration (optional)
