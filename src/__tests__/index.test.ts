@@ -20,10 +20,10 @@ const NON_EXISTING_VARS = {
 } satisfies Schema;
 
 const EXISTING_VARS = {
-  NODE_ENV: { default: 'development' },
-  NUM: { default: '123' },
+  NODE_ENV: { required: true },
+  NUM: { default: 123 },
   STR: { default: 'abc' },
-  HAS_QUOTES: { default: 'false' },
+  HAS_QUOTES: { default: false },
 } satisfies Schema;
 
 const schema = {
