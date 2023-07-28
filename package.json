@@ -21,8 +21,14 @@
     "build": "tsup ./src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "dotenv",
+    "safe",
+    "safe-env",
+    "production",
+    "typescript"
+  ],
+  "author": "@bkrmadtya 2023",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.3.1"
