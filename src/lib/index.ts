@@ -1,25 +1,12 @@
 import * as dotenv from 'dotenv';
 
-type SchemaValue =
-  | { required: true; default?: never }
-  | { default: any; required?: never };
+import { Config, Schema, SchemaKey, SchemaValue } from './type';
 
-type EnvSchema = {
-  [key: string]: SchemaValue;
-};
+export type { Config, Schema, SchemaKey, SchemaValue };
 
-type EnvConfig = {
-  message?: {
-    missingEnv?: string;
-    missingRequiredVar?: string;
-  };
-} & dotenv.DotenvConfigOptions;
-
-type SchemaKey<T> = keyof T;
-
-export const loadEnv = <T extends EnvSchema>(
+export const loadEnv = <T extends Schema>(
   schema: T,
-  config: EnvConfig = { path: '.env' }
+  config: Config = { path: '.env' }
 ) => {
   const {
     message = {
@@ -34,9 +21,9 @@ export const loadEnv = <T extends EnvSchema>(
   if (env.error) throw env.error;
 
   type Key = SchemaKey<typeof schema>;
-  type AllKeys = Partial<Record<Key, string>>;
 
   return {
+    env,
     getEnv: (keyStr: Key): string => {
       const key = keyStr as string;
       const value = env?.parsed?.[key];
@@ -50,7 +37,5 @@ export const loadEnv = <T extends EnvSchema>(
 
       return value || ('default' in option ? option.default : undefined);
     },
-    env,
-    getAllEnv: (): AllKeys => env.parsed! as AllKeys,
   };
 };
