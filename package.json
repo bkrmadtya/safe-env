@@ -1,8 +1,21 @@
 {
   "name": "safe-env",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A thin wrapper around dotenv to make it safe to use in production.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsup ./src",
