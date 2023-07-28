@@ -10,8 +10,10 @@ export const loadEnv = <T extends Schema>(
 ) => {
   const {
     message = {
-      missingEnv: 'Variable not definded in env schema and env file',
-      missingRequiredVar: 'Missing required env variable',
+      notFound: (key: string) =>
+        `Variable '${key}' not definded in env schema and env file`,
+      missingRequired: (key: string) =>
+        `Missing required env variable '${key}'`,
     },
     ...rest
   } = config;
@@ -29,11 +31,10 @@ export const loadEnv = <T extends Schema>(
       const value = env?.parsed?.[key];
       const option = schema[key as Key] as SchemaValue;
 
-      if (!option && !value)
-        throw new Error(`${message?.missingEnv}: '${key}'`);
+      if (!option && !value) throw new Error(message?.notFound?.(key));
 
       if ('required' in option && option.required && !value)
-        throw new Error(`${message?.missingRequiredVar}: '${key}'`);
+        throw new Error(message?.missingRequired?.(key));
 
       return value || ('default' in option ? option.default : undefined);
     },

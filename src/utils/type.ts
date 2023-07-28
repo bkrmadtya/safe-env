@@ -10,8 +10,8 @@ export type Schema = {
 
 export type Config = {
   message?: {
-    missingEnv?: string;
-    missingRequiredVar?: string;
+    notFound?: (key: string) => string;
+    missingRequired?: (key: string) => string;
   };
 } & DotenvConfigOptions;
 

@@ -6,8 +6,9 @@ import { Config, Schema, loadEnv } from '..';
 const config: Config = {
   path: path.join(__dirname, '.env.test'),
   message: {
-    missingEnv: 'Missing environment variable!',
-    missingRequiredVar: 'Missing required variable!',
+    notFound: (key: string) =>
+      `Variable '${key}' not definded in env schema and env file`,
+    missingRequired: (key: string) => `Missing required env variable '${key}'`,
   },
 };
 
@@ -61,16 +62,22 @@ describe('getEnv()', () => {
 
   test(`should throw missing required error for non existing variable if they are required`, () => {
     expect(() => getEnv('NE_BOOL')).toThrowError(
-      config.message?.missingRequiredVar
+      config.message?.missingRequired?.('NE_BOOL')
     );
   });
 
   test(`should throw missing error for non existing (random) variables not included in schema`, () => {
     // @ts-expect-error
-    expect(() => getEnv('RANDOM')).toThrowError(config.message?.missingEnv);
+    expect(() => getEnv('RANDOM')).toThrowError(
+      config.message?.notFound?.('RANDOM')
+    );
     // @ts-expect-error
-    expect(() => getEnv('RANDOM1')).toThrowError(config.message?.missingEnv);
+    expect(() => getEnv('RANDOM1')).toThrowError(
+      config.message?.notFound?.('RANDOM1')
+    );
     // @ts-expect-error
-    expect(() => getEnv('RANDOM2')).toThrowError(config.message?.missingEnv);
+    expect(() => getEnv('RANDOM2')).toThrowError(
+      config.message?.notFound?.('RANDOM2')
+    );
   });
 });
