@@ -17,7 +17,10 @@ type EnvConfig = {
 
 type SchemaKey<T> = keyof T;
 
-export const loadEnv = <T>(schema: T, config: EnvConfig = { path: '.env' }) => {
+export const loadEnv = <T extends EnvSchema>(
+  schema: T,
+  config: EnvConfig = { path: '.env' }
+) => {
   const {
     message = {
       missingEnv: 'Variable not definded in env schema and env file',
@@ -51,39 +54,3 @@ export const loadEnv = <T>(schema: T, config: EnvConfig = { path: '.env' }) => {
     getAllEnv: (): AllKeys => env.parsed! as AllKeys,
   };
 };
-
-// ------------------------------------------------- USAGE -----------------------------------------------
-
-// dot-env config + this lib's config (messsage: {})
-const config = {
-  path: '.env',
-  message: {
-    missingEnv: 'Variable not found in schema and env file',
-    missingRequiredVar: 'Custom missing required env variable',
-  },
-};
-
-const variables = {
-  TEST: { default: 'A DEFAULT VALUE' },
-  SECRET: { default: 1234567890 },
-  FLOAT: { default: 0.5 },
-  BOOL: { required: true },
-} satisfies EnvSchema;
-
-const { getEnv, getAllEnv } = loadEnv(variables, config);
-
-const allEnv = getAllEnv();
-console.log(allEnv.BOOL);
-
-const TEST = getEnv('TEST');
-console.log({ TEST });
-const SECRET = getEnv('SECRET');
-console.log({ SECRET });
-const FLOAT = getEnv('FLOAT');
-console.log({ FLOAT });
-const BOOL = getEnv('BOOL');
-console.log({ BOOL });
-
-// Shows error in editor
-const RANDOM = getEnv('asdfasdf');
-const float = getEnv('float');
