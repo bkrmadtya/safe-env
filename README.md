@@ -15,7 +15,7 @@ npm install safe-env
 
 ## Configuration (optional)
 
-The configuration object is optional. It takes all the same options as [dotenv](https://github.com/motdotla/dotenv)'s `config` function along with an additional message object which can be used to customize the error messages.
+The configuration object is optional. It takes all the same options as [dotenv](https://github.com/motdotla/dotenv)'s `config` function along with an additional `message` object with `notFound` and `missingRequired` methods which can be used to customize the error messages.
 
 ```typescript
 import { type Config, loadEnv } from 'safe-env';
@@ -24,8 +24,9 @@ const config: Config = {
   path: '/path/to/.env',
   ...allDotenvConfigOptions,
   message: {
-    missingEnv: 'Missing environment variable!',
-    missingRequiredVar: 'Missing required variable!',
+    notFound: (key: string) =>
+      `Variable '${key}' not definded in env schema and env file`,
+    missingRequired: (key: string) => `Missing required env variable '${key}'`,
   },
 };
 ```
