@@ -1,6 +1,6 @@
 {
   "name": "@bkrmadtya/safe-env",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A thin wrapper around dotenv to make it easy, safe and verbose to access environment variables.",
   "repository": {
     "type": "git",
