@@ -43,7 +43,7 @@ Incase, a required variable is not found in the `.env` file or a random key not 
 
 Let's take following `.env` file as an example:
 
-```bash
+```dosini
 # .env
 NODE_ENV=production
 ```
