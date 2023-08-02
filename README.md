@@ -41,6 +41,15 @@ The schema object is used to define the environment variables expected in the ap
 
 Incase, a required variable is not found in the `.env` file or a random key not present in the schema is provided, an error is thrown with a default or a custom message.
 
+Let's take following `.env` file as an example:
+
+```bash
+# .env
+NODE_ENV=production
+```
+
+The schema object for the above `.env` file can be defined as follows:
+
 ```typescript
 const schema = {
   NODE_ENV: { default: 'development' }, // exists in .env
@@ -51,12 +60,10 @@ const schema = {
 
 ## Usage
 
-Recommended usage is to create a `config.ts` file in the root of your project which can act as a single source of truth for all your environment variables.
+Recommended usage is to create a `env.ts` file in the root of your project which can act as a single source of truth for all your environment variables.
 
 ```typescript
-import { loadEnv, type Config, type Schema } from 'safe-env';
-
-import { Config, Schema, loadEnv } from '..';
+import { loadEnv, type Config, type Schema } from '@bkrmadtya/safe-env';
 
 const config: Config = {
   path: '/path/to/.env',
@@ -71,16 +78,16 @@ const schema = {
 const { getEnv } = loadEnv(schema, config);
 
 // returns production
-const NODE_ENV = getEnv('NODE_ENV');
+export const NODE_ENV = getEnv('NODE_ENV');
 
 // returns 'Ven'
-const NAME = getEnv('NAME');
+export const NAME = getEnv('NAME');
 
 // throws error since its required
-const TEST = getEnv('TEST');
+export const TEST = getEnv('TEST');
 
 // shows ts compile error and throws error at runtime since it doesn't exist in schema
-const RANDOM = getEnv('RANDOM');
+export const RANDOM = getEnv('RANDOM');
 ```
 
 ### `env` object
@@ -88,11 +95,13 @@ const RANDOM = getEnv('RANDOM');
 The `env` object from the response `dotenv.config()` is also returned by the `loadEnv` function.
 
 ```typescript
-import { loadEnv } from 'safe-env';
+import { loadEnv } from '@bkrmadtya/safe-env';
 
 const schema = { ... };
 
 const { env } = loadEnv(schema);
+
+// Do something with env
 ```
 
 ## License
