@@ -45,7 +45,8 @@
     "vitest": "^0.33.0"
   },
   "publishConfig": {
-    "tag": "1.x",
+    "tag": "latest",
+    "access": "public",
     "registry": "https://npm.pkg.github.com/bkrmadtya"
   }
 }
