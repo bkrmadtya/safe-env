@@ -1,6 +1,6 @@
 {
   "name": "@bkrmadtya/safe-env",
-  "version": "1.0.4",
+  "version": "1.0.3",
   "description": "A thin wrapper around dotenv to make it easy, safe and verbose to access environment variables.",
   "repository": {
     "type": "git",
@@ -45,7 +45,7 @@
     "vitest": "^0.33.0"
   },
   "publishConfig": {
-    "tag": "latest",
+    "tag": "1.x",
     "registry": "https://npm.pkg.github.com/bkrmadtya"
   }
 }
