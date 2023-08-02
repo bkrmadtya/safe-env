@@ -47,6 +47,6 @@
   "publishConfig": {
     "tag": "latest",
     "access": "public",
-    "registry": "https://npm.pkg.github.com/bkrmadtya"
+    "registry": "https://npm.pkg.github.com"
   }
 }
