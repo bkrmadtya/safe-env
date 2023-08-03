@@ -1,7 +1,7 @@
 import path from 'path';
 import { describe, test, expect } from 'vitest';
 
-import { Config, Schema, loadEnv } from '..';
+import { Config, Schema, loadEnv } from '../src';
 
 const config: Config = {
   path: path.join(__dirname, '.env.test'),
