@@ -22,7 +22,7 @@ yarn add @bkrmadtya/safe-env
 The configuration object is optional. It takes all the same options as [dotenv](https://github.com/motdotla/dotenv)'s `config` function along with an additional `message` object with `notFound` and `missingRequired` methods which can be used to customize the error messages.
 
 ```typescript
-import { type Config, loadEnv } from 'safe-env';
+import { type Config, loadEnv } from '@bkrmadtya/safe-env';
 
 const config: Config = {
   path: '/path/to/.env',
